@@ -1,9 +1,9 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:listadecontatos/helpers/contact_helper.dart';
-import 'package:listadecontatos/pages/alarm.dart';
-import 'package:listadecontatos/ui/contact_page.dart';
+import 'package:projeto_rpg_manager/helpers/jogador_helper.dart';
+import 'package:projeto_rpg_manager/pages/alarm.dart';
+import 'package:projeto_rpg_manager/ui/jogador_page.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 enum OrderOptions {orderaz, orderza,alarm}
@@ -17,21 +17,21 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
 
-  ContactHelper helper = ContactHelper();
+  JogadorHelper helper = JogadorHelper();
 
-  List<Contact> contacts = [];
+  List<Jogador> jogador = [];
 
   @override
   void initState() {
     super.initState();
-    _getAllContacts();
+    _getAllJogadores();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Contatos"),
+        title: Text("Jogadores"),
         backgroundColor: Colors.red,
         centerTitle: true,
         actions: <Widget>[
@@ -45,10 +45,10 @@ class _HomePageState extends State<HomePage> {
                   child: Text("Ordenar de Z-A"),
                   value: OrderOptions.orderza,
                 ),
-                const PopupMenuItem(
+                /*const PopupMenuItem(
                   child: Text("Alarm"),
                   value: OrderOptions.alarm,
-                ),
+                ),*/
               ],
             onSelected: _orderList,
           )
@@ -57,22 +57,22 @@ class _HomePageState extends State<HomePage> {
       backgroundColor: Colors.white,
       floatingActionButton: FloatingActionButton(
         onPressed: (){
-          _showContactPage();
+          _showJogadorPage();
         },
         child: Icon(Icons.add),
         backgroundColor: Colors.red,
       ),
       body: ListView.builder(
           padding: EdgeInsets.all(10.0),
-          itemCount: contacts.length,
+          itemCount: jogador.length,
           itemBuilder: (context, Index){
-            return _contactCard(context, Index);
+            return _jogadorCard(context, Index);
           }
       ),
     );
   }
 
-  Widget _contactCard(BuildContext context, int index){
+  Widget _jogadorCard(BuildContext context, int index){
     return GestureDetector(
       child: Card(
         child: Padding(
@@ -85,8 +85,8 @@ class _HomePageState extends State<HomePage> {
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   image: DecorationImage(
-                    image: contacts[index].img != null ?
-                        FileImage(File(contacts[index].img!)) :
+                    image: jogador[index].img != null ?
+                        FileImage(File(jogador[index].img!)) :
                           AssetImage("images/megaman-x.jpg") as ImageProvider
                   ),
                 ),
@@ -96,14 +96,14 @@ class _HomePageState extends State<HomePage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children:<Widget>[
-                    Text(contacts[index].name ?? "",
+                    Text(jogador[index].jogador ?? "",
                     style: TextStyle(fontSize: 22.0,
                         fontWeight: FontWeight.bold),
                     ),
-                    Text(contacts[index].email ?? "",
+                    Text(jogador[index].nome ?? "",
                       style: TextStyle(fontSize: 18.0,),
                     ),
-                Text(contacts[index].phone ?? "",
+                Text(jogador[index].raca ?? "",
                   style: TextStyle(fontSize: 18.0,),
                 )
                   ],
@@ -137,7 +137,7 @@ class _HomePageState extends State<HomePage> {
                             style: TextStyle(color: Colors.red, fontSize: 20.0),
                           ),
                           onPressed: (){
-                            launchUrl(Uri.parse("tel:${contacts[index].phone}"));
+                            /*launchUrl(Uri.parse("tel:${contacts[index].phone}"));*/ //numero de telefone
                             Navigator.pop(context);
                           },
                         ),
@@ -150,7 +150,7 @@ class _HomePageState extends State<HomePage> {
                           ),
                           onPressed: (){
                             Navigator.pop(context);
-                            _showContactPage(contact: contacts[index]);
+                            _showJogadorPage(jogador: jogador[index]);
                           },
                         ),
                       ),
@@ -161,9 +161,9 @@ class _HomePageState extends State<HomePage> {
                             style: TextStyle(color: Colors.red, fontSize: 20.0),
                           ),
                           onPressed: (){
-                            helper.deleteContact(contacts[index].id!);
+                            helper.deleteJogador(jogador[index].id!);
                             setState(() {
-                              contacts.removeAt(index);
+                              jogador.removeAt(index);
                               Navigator.pop(context);
                             });
                           },
@@ -177,39 +177,39 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  void _showContactPage({Contact? contact}) async {
-    print(contact);
-   final recContact = await Navigator.push(context,
-      MaterialPageRoute(builder: (context) => ContactPage(contact: contact,))
+  void _showJogadorPage({Jogador? jogador}) async {
+    print(jogador);
+   final recJogador = await Navigator.push(context,
+      MaterialPageRoute(builder: (context) => JogadorPage(jogador: jogador,))
     );
-   if(recContact != null){
-     if(contact != null){
+   if(recJogador != null){
+     if(jogador != null){
        print("atualizar");
-       await helper.updateContact(recContact);
-       _getAllContacts();
+       await helper.updateJogador(recJogador);
+       _getAllJogadores();
      }else{
-       await helper.saveContact(recContact);
-       _getAllContacts();
+       await helper.saveJogador(recJogador);
+       _getAllJogadores();
      }
    }
   }
-  void _getAllContacts(){
-    helper.getAllContact().then((list){
+  void _getAllJogadores(){
+    helper.getAllJogador().then((list){
       setState(() {
-        contacts = list.cast<Contact>();
+        jogador = list.cast<Jogador>();
       });
     });
   }
   void _orderList(OrderOptions result){
     switch(result){
       case OrderOptions.orderaz:
-        contacts.sort((a, b){
-         return a.name!.toLowerCase().compareTo(b.name!.toLowerCase());
+        jogador.sort((a, b){
+         return a.jogador!.toLowerCase().compareTo(b.jogador!.toLowerCase());
         });
         break;
       case OrderOptions.orderza:
-        contacts.sort((a, b){
-         return b.name!.toLowerCase().compareTo(a.name!.toLowerCase());
+        jogador.sort((a, b){
+         return b.jogador!.toLowerCase().compareTo(a.jogador!.toLowerCase());
         });
         break;
       case OrderOptions.alarm:

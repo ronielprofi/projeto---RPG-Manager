@@ -3,44 +3,44 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
-import '../helpers/contact_helper.dart';
+import '../helpers/jogador_helper.dart';
 
 import 'package:image_picker/image_picker.dart';
 
-class ContactPage extends StatefulWidget {
+class JogadorPage extends StatefulWidget {
 
-  final Contact? contact;
+  final Jogador? jogador;
 
-  ContactPage({ this.contact});
+  JogadorPage({ this.jogador});
 
   @override
-  State<ContactPage> createState() => _ContactPageState();
+  State<JogadorPage> createState() => _JogadorPageState();
 }
 
-class _ContactPageState extends State<ContactPage> {
+class _JogadorPageState extends State<JogadorPage> {
 
-  final _nameController = TextEditingController();
-  final _emailController = TextEditingController();
-  final _phoneController = TextEditingController();
+  final _jogadorController = TextEditingController();
+  final _nomeController = TextEditingController();
+  final _racaController = TextEditingController();
 
-  final FocusNode _nameFocus = FocusNode();
+  final FocusNode _jogadorFocus = FocusNode();
 
   bool _userEdited = false;
 
-   Contact? _editedContact;
+  Jogador? _editedJogador;
 
   @override
   void initState() {
     super.initState();
 
-    if(widget.contact == null){
-      _editedContact = Contact();
+    if(widget.jogador == null){
+      _editedJogador = Jogador();
     } else {
-      _editedContact = Contact.fromMap(widget.contact!.toMap());
+      _editedJogador = Jogador.fromMap(widget.jogador!.toMap());
 
-      _nameController.text = _editedContact!.name!;
-      _emailController.text = _editedContact!.email!;
-      _phoneController.text = _editedContact!.phone!;
+      _jogadorController.text = _editedJogador!.jogador!;
+      _nomeController.text = _editedJogador!.nome!;
+      _racaController.text = _editedJogador!.raca!;
     }
   }
   @override
@@ -50,15 +50,15 @@ class _ContactPageState extends State<ContactPage> {
         child: Scaffold(
           appBar: AppBar(
             backgroundColor: Colors.red,
-            title: Text(_editedContact?.name ?? "Novo Contato"),
+            title: Text(_editedJogador?.nome ?? "Novo Contato"),
             centerTitle: true,
           ),
           floatingActionButton: FloatingActionButton(
             onPressed: (){
-              if(_editedContact!.name != null && _editedContact!.name!.isNotEmpty){
-                Navigator.pop(context, _editedContact);
+              if(_editedJogador!.jogador != null && _editedJogador!.jogador!.isNotEmpty){
+                Navigator.pop(context, _editedJogador);
               } else {
-                FocusScope.of(context).requestFocus(_nameFocus);
+                FocusScope.of(context).requestFocus(_jogadorFocus);
               }
             },
             child: Icon(Icons.save),
@@ -75,8 +75,8 @@ class _ContactPageState extends State<ContactPage> {
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       image: DecorationImage(
-                          image: _editedContact?.img != null ?
-                          FileImage(File(_editedContact!.img!)) :
+                          image: _editedJogador?.img != null ?
+                          FileImage(File(_editedJogador!.img!)) :
                           AssetImage("images/megaman-x.jpg") as ImageProvider
                       ),
                     ),
@@ -86,40 +86,38 @@ class _ContactPageState extends State<ContactPage> {
                       if(file != null) {
                         setState(() {
                           _userEdited = true;
-                          _editedContact!.img = file.path;
+                          _editedJogador!.img = file.path;
                         });
                       }
                     });
                   },
                 ),
                 TextField(
-                  controller: _nameController,
-                  focusNode: _nameFocus,
-                  decoration: InputDecoration(labelText: "Nome"),
+                  controller: _jogadorController,
+                  focusNode: _jogadorFocus,
+                  decoration: InputDecoration(labelText: "Jogador"),
                   onChanged: (text){
                     _userEdited = true;
                     setState(() {
-                      _editedContact!.name = text;
+                      _editedJogador!.jogador = text;
                     });
                   },
                 ),
                 TextField(
-                  controller: _emailController,
-                  decoration: InputDecoration(labelText: "Email"),
+                  controller: _nomeController,
+                  decoration: InputDecoration(labelText: "Nome"),
                   onChanged: (text){
                     _userEdited = true;
-                    _editedContact!.email = text;
+                    _editedJogador!.nome = text;
                   },
-                  keyboardType: TextInputType.emailAddress,
                 ),
                 TextField(
-                  controller: _phoneController,
-                  decoration: InputDecoration(labelText: "phone"),
+                  controller: _racaController,
+                  decoration: InputDecoration(labelText: "Raça"),
                   onChanged: (text){
                     _userEdited = true;
-                    _editedContact!.phone = text;
+                    _editedJogador!.raca = text;
                   },
-                  keyboardType: TextInputType.phone,
                 ),
               ],
             ),
