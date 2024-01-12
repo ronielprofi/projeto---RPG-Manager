@@ -100,12 +100,15 @@ class _HomePageState extends State<HomePage> {
                     style: TextStyle(fontSize: 22.0,
                         fontWeight: FontWeight.bold),
                     ),
-                    Text(jogador[index].nome ?? "",
+                    Text("P: ${jogador[index].nome ?? ""}",
                       style: TextStyle(fontSize: 18.0,),
                     ),
-                Text(jogador[index].raca ?? "",
-                  style: TextStyle(fontSize: 18.0,),
-                )
+                    Text("Lv: ${jogador[index].nivel ?? "1"}",
+                      style: TextStyle(fontSize: 18.0,),
+                    ),
+                    Text("R: ${jogador[index].raca ?? ""}",
+                      style: TextStyle(fontSize: 18.0,),
+                    )
                   ],
                 ),
               )

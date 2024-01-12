@@ -11,6 +11,8 @@ final String jogadorColumn = "jogadorColumn";
 final String nomeColumn = "nomeColumn";
 final String racaColumn = "racaColumn";
 final String elementoColumn = "elementoColumn";
+final String nivelColumn = "nivelColumn";
+final String xpColumn = "xpColumn";
 final String classeColumn = "classeColumn";
 final String tituloColumn = "tituloColumn";
 final String idadeColumn = "idadeColumn";
@@ -61,7 +63,7 @@ class JogadorHelper {
     return await openDatabase(path, version: 1,onCreate: (Database db, int newerVersion) async {
       await db.execute(
           "CREATE TABLE $jogadorTable($idColumn INTEGER PRIMARY KEY, $imgColumn TEXT, $jogadorColumn TEXT, $nomeColumn TEXT,"
-              "$racaColumn TEXT, $elementoColumn TEXT, $classeColumn TEXT, $tituloColumn TEXT, $idadeColumn TEXT, $forcaColumn TEXT,"
+              "$racaColumn TEXT, $elementoColumn TEXT, $nivelColumn TEXT, $xpColumn TEXT, $classeColumn TEXT, $tituloColumn TEXT, $idadeColumn TEXT, $forcaColumn TEXT,"
               "$agilidadeColumn TEXT, $destrezaColumn TEXT, $esquivaColumn TEXT, $constituicaoColumn TEXT, $sabedoriaColumn TEXT,"
               "$armaduraCorporalColumn TEXT, $resistenciaColumn TEXT, $sorteColumn TEXT, $inteligenciaColumn TEXT, $percepcaoColumn TEXT, $carismaColumn TEXT,"
               "$ataqueColumn TEXT, $defesaColumn TEXT, $criticoColumn TEXT, $vidaColumn TEXT, $manaColumn TEXT, $magiaColumn TEXT)"
@@ -77,7 +79,7 @@ class JogadorHelper {
   Future<Jogador?> getJogador(int id) async{
     Database? dbJogador = await db;
     List<Map> maps = await dbJogador.query(jogadorTable,
-    columns: [idColumn, imgColumn, jogadorColumn, nomeColumn, racaColumn, elementoColumn, classeColumn, tituloColumn, idadeColumn,
+    columns: [idColumn, imgColumn, jogadorColumn, nomeColumn, racaColumn, elementoColumn, nivelColumn , xpColumn, classeColumn, tituloColumn, idadeColumn,
       forcaColumn, agilidadeColumn, destrezaColumn, esquivaColumn, constituicaoColumn, sabedoriaColumn, armaduraCorporalColumn,
       resistenciaColumn, sorteColumn, inteligenciaColumn, percepcaoColumn, carismaColumn, ataqueColumn, defesaColumn, criticoColumn,
       vidaColumn, manaColumn, magiaColumn],
@@ -134,6 +136,8 @@ class Jogador{
   String? nome;
   String? raca;
   String? elemento;
+  int? nivel;
+  int? xp;
   String? classe;
   String? titulo;
   String? idade;
@@ -169,6 +173,8 @@ class Jogador{
     nome = map [nomeColumn];
     raca = map [racaColumn];
     elemento = map [elementoColumn];
+    nivel = map [nivelColumn];
+    xp = map [xpColumn];
     classe = map [classeColumn];
     titulo = map [tituloColumn];
     idade = map [idadeColumn];
@@ -203,6 +209,8 @@ class Jogador{
       nomeColumn: nome,
       racaColumn: raca,
       elementoColumn: elemento,
+      nivelColumn: nivel,
+      xpColumn: xp,
       classeColumn: classe,
       tituloColumn: titulo,
       idadeColumn: idade,
