@@ -50,7 +50,7 @@ class _JogadorPageState extends State<JogadorPage> {
         child: Scaffold(
           appBar: AppBar(
             backgroundColor: Colors.red,
-            title: Text(_editedJogador?.nome ?? "Novo Contato"),
+            title: Text(_editedJogador?.nome ?? "Novo Jogador"),
             centerTitle: true,
           ),
           floatingActionButton: FloatingActionButton(
