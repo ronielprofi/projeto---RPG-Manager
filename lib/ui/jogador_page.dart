@@ -7,6 +7,8 @@ import '../helpers/jogador_helper.dart';
 
 import 'package:image_picker/image_picker.dart';
 
+enum Options {codigo,nada}
+
 class JogadorPage extends StatefulWidget {
 
   final Jogador? jogador;
@@ -18,6 +20,8 @@ class JogadorPage extends StatefulWidget {
 }
 
 class _JogadorPageState extends State<JogadorPage> {
+  int AzulPetrolioLight = 0xFF110274;
+  int AzulPetrolio = 0xff040b28;
 
   final _jogadorController = TextEditingController();
   final _nomeController = TextEditingController();
@@ -29,12 +33,17 @@ class _JogadorPageState extends State<JogadorPage> {
 
   Jogador? _editedJogador;
 
+  TextEditingController _codigoController = TextEditingController();
+  String _codigo = "";
+  bool _admModo = false;
+
   @override
   void initState() {
     super.initState();
 
     if(widget.jogador == null){
       _editedJogador = Jogador();
+      _admModo = true;
     } else {
       _editedJogador = Jogador.fromMap(widget.jogador!.toMap());
 
@@ -49,9 +58,28 @@ class _JogadorPageState extends State<JogadorPage> {
         onWillPop: _requestPop,
         child: Scaffold(
           appBar: AppBar(
-            backgroundColor: Colors.red,
-            title: Text(_editedJogador?.nome ?? "Novo Jogador"),
+            backgroundColor: Colors.blue,
+            title: _admModo ? Text("${_editedJogador?.nome ?? "Novo Jogador"}") : Text(_editedJogador?.nome ?? "Novo Jogador"),
             centerTitle: true,
+            actions: <Widget>[
+              PopupMenuButton<Options>(
+                icon: Icon(
+                  Icons.more_vert, // Ícone padrão de três pontos
+                  color: Colors.blue, // Cor desejada
+                ),
+                itemBuilder: (context) => <PopupMenuEntry<Options>>[
+                  const PopupMenuItem(
+                    child: Text("Códigos"),
+                    value: Options.codigo,
+                  ),
+                  const PopupMenuItem(
+                    child: Text("nada"),
+                    value: Options.nada,
+                  ),
+                ],
+                onSelected: _OptionsList,
+              )
+            ],
           ),
           floatingActionButton: FloatingActionButton(
             onPressed: (){
@@ -62,7 +90,7 @@ class _JogadorPageState extends State<JogadorPage> {
               }
             },
             child: Icon(Icons.save),
-            backgroundColor: Colors.red,
+            backgroundColor: Colors.blue,
           ),
           body: SingleChildScrollView(
             padding: EdgeInsets.all(10.0),
@@ -93,6 +121,7 @@ class _JogadorPageState extends State<JogadorPage> {
                   },
                 ),
                 TextField(
+                  enabled: _admModo,
                   controller: _jogadorController,
                   focusNode: _jogadorFocus,
                   decoration: InputDecoration(labelText: "Jogador"),
@@ -104,6 +133,7 @@ class _JogadorPageState extends State<JogadorPage> {
                   },
                 ),
                 TextField(
+                  enabled: _admModo,
                   controller: _nomeController,
                   decoration: InputDecoration(labelText: "Nome"),
                   onChanged: (text){
@@ -112,6 +142,7 @@ class _JogadorPageState extends State<JogadorPage> {
                   },
                 ),
                 TextField(
+                  enabled: _admModo,
                   controller: _racaController,
                   decoration: InputDecoration(labelText: "Raça"),
                   onChanged: (text){
@@ -125,7 +156,7 @@ class _JogadorPageState extends State<JogadorPage> {
         ),
     );
   }
- Future<bool> _requestPop(){
+  Future<bool> _requestPop(){
     if(_userEdited){
       showDialog(context: context,
           builder: (context){
@@ -154,5 +185,147 @@ class _JogadorPageState extends State<JogadorPage> {
     } else {
       return Future.value(true);
     }
+  }
+  void _OptionsList(Options result){
+    switch(result){
+      case Options.nada:
+        showReview(context,
+          "Essa função ainda esta em desenvovimento",
+          "images/megaman-x.jpg",
+          "Ok",
+              () {
+            Navigator.of(context).pop();
+          },
+        );
+        break;
+      case Options.codigo:
+        showDialog(context: context,
+            builder: (context){
+              return AlertDialog(
+                title: Text("Digite o código",
+                  style: TextStyle(color: Colors.blue),),
+                content: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 14),
+                  child: TextFormField(
+                    controller: _codigoController,
+                    onChanged: (text){
+                      _codigo = text;
+                    },
+                    decoration: InputDecoration(
+                      floatingLabelBehavior: FloatingLabelBehavior.always,
+                      contentPadding: EdgeInsets.all(8),
+                      hintStyle: TextStyle(color: Colors.blue),
+                      labelStyle: TextStyle(color: Colors.blue),
+                      hintText: "Código",
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        borderSide: BorderSide(
+                          width: 2.0,
+                          color: Colors.blue,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                actions: <Widget>[
+                  TextButton(
+                    child: Text("Cancelar"),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                  TextButton(
+                    child: Text("sim"),
+                    onPressed: () {
+                      if(_codigo == "adm1306"){
+                        setState(() {
+                          _admModo = _admModo ? false : true;
+                          print(" aqui ------------------------------------ $_admModo");
+                        });
+                        Navigator.of(context).pop();
+                      } else{
+                        showReview(context,
+                          "Esse código não é válido",
+                          "images/megaman-x.jpg",
+                          "Ok",
+                              () {
+                            Navigator.of(context).pop();
+                          },
+                        );
+                      }
+                      _codigoController.text = "";
+                    },
+                  ),
+                ],
+              );
+            }
+        );
+        break;
+    }
+    setState(() {
+
+    });
+  }
+  showReview(context, String mensagem, String pit, String textbtn, rota, {bool clickFora = true}) {
+    showDialog(
+        context: context,
+        barrierDismissible: clickFora,
+        builder: (BuildContext context) {
+          return Dialog(
+            shape:
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+            child: Container(
+              height: 350,
+              decoration:
+              BoxDecoration(borderRadius: BorderRadius.circular(20.0)),
+              child: Column(
+                children: <Widget>[
+                  Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: 50.0,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(10.0),
+                          topRight: Radius.circular(10.0)),
+                      color: Colors.blue,
+                    ),
+                  ),
+
+                  SizedBox(height: 20.0),
+                  Padding(
+                      padding: EdgeInsets.all(10.0),
+                      child: Text(
+                        mensagem, //mensagem referente a resposta
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontFamily: 'Quicksand',
+                          fontSize: 20.0,
+                          fontWeight: FontWeight.w300,
+                        ),
+                      )),
+
+                  Image.asset(
+                    pit,
+                    height: 100,
+                  ), //carinha do pit
+
+                  TextButton(
+                      child: Center(
+                        child: Text(
+                          textbtn, //nome do botão
+                          style: TextStyle(
+                              fontFamily: 'Montserrat',
+                              fontSize: 20.0,
+                              color: Colors.blue),
+                        ),
+                      ),
+                      onPressed: rota, //caminho apos o botão ser clicado
+                      style: TextButton.styleFrom(
+                          backgroundColor: Colors.transparent))
+                ],
+              ),
+            ),
+          );
+        });
   }
 }

@@ -16,6 +16,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  int AzulPetrolioLight = 0xFF110274;
+  int AzulPetrolio = 0xff040b28;
 
   JogadorHelper helper = JogadorHelper();
 
@@ -32,7 +34,7 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Jogadores"),
-        backgroundColor: Colors.red,
+        backgroundColor: Colors.blue,
         centerTitle: true,
         actions: <Widget>[
           PopupMenuButton<OrderOptions>(
@@ -60,7 +62,7 @@ class _HomePageState extends State<HomePage> {
           _showJogadorPage();
         },
         child: Icon(Icons.add),
-        backgroundColor: Colors.red,
+        backgroundColor: Colors.blue,
       ),
       body: ListView.builder(
           padding: EdgeInsets.all(10.0),
@@ -137,19 +139,28 @@ class _HomePageState extends State<HomePage> {
                         padding: EdgeInsets.all(10.0),
                         child:    TextButton(
                           child: Text("ligar",
-                            style: TextStyle(color: Colors.red, fontSize: 20.0),
+                            style: TextStyle(color: Colors.blue, fontSize: 20.0),
                           ),
                           onPressed: (){
+                            setState((){
+                              showReview(context,
+                                "Essa função ainda esta em desenvovimento",
+                                "images/megaman-x.jpg",
+                                "Ok",
+                                    () {
+                                  Navigator.of(context).pop();
+                                },
+                              );
+                            });
                             /*launchUrl(Uri.parse("tel:${contacts[index].phone}"));*/ //numero de telefone
-                            Navigator.pop(context);
                           },
                         ),
                       ),
                       Padding(
                         padding: EdgeInsets.all(10.0),
                         child:    TextButton(
-                          child: Text("Editar",
-                            style: TextStyle(color: Colors.red, fontSize: 20.0),
+                          child: Text("Ver Ficha",
+                            style: TextStyle(color: Colors.blue, fontSize: 20.0),
                           ),
                           onPressed: (){
                             Navigator.pop(context);
@@ -161,7 +172,7 @@ class _HomePageState extends State<HomePage> {
                         padding: EdgeInsets.all(10.0),
                         child:    TextButton(
                           child: Text("Excluir",
-                            style: TextStyle(color: Colors.red, fontSize: 20.0),
+                            style: TextStyle(color: Colors.blue, fontSize: 20.0),
                           ),
                           onPressed: (){
                             helper.deleteJogador(jogador[index].id!);
@@ -179,7 +190,6 @@ class _HomePageState extends State<HomePage> {
         }
     );
   }
-
   void _showJogadorPage({Jogador? jogador}) async {
     print(jogador);
    final recJogador = await Navigator.push(context,
@@ -224,5 +234,67 @@ class _HomePageState extends State<HomePage> {
     setState(() {
 
     });
+  }
+  showReview(context, String mensagem, String pit, String textbtn, rota, {bool clickFora = true}) {
+    showDialog(
+        context: context,
+        barrierDismissible: clickFora,
+        builder: (BuildContext context) {
+          return Dialog(
+            shape:
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+            child: Container(
+              height: 350,
+              decoration:
+              BoxDecoration(borderRadius: BorderRadius.circular(20.0)),
+              child: Column(
+                children: <Widget>[
+                  Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: 50.0,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(10.0),
+                          topRight: Radius.circular(10.0)),
+                      color: Color(AzulPetrolio),
+                    ),
+                  ),
+
+                  SizedBox(height: 20.0),
+                  Padding(
+                      padding: EdgeInsets.all(10.0),
+                      child: Text(
+                        mensagem, //mensagem referente a resposta
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontFamily: 'Quicksand',
+                          fontSize: 20.0,
+                          fontWeight: FontWeight.w300,
+                        ),
+                      )),
+
+                  Image.asset(
+                    pit,
+                    height: 100,
+                  ), //carinha do pit
+
+                  TextButton(
+                      child: Center(
+                        child: Text(
+                          textbtn, //nome do botão
+                          style: TextStyle(
+                              fontFamily: 'Montserrat',
+                              fontSize: 20.0,
+                              color: Colors.blue),
+                        ),
+                      ),
+                      onPressed: rota, //caminho apos o botão ser clicado
+                      style: TextButton.styleFrom(
+                          backgroundColor: Colors.transparent))
+                ],
+              ),
+            ),
+          );
+        });
   }
 }
