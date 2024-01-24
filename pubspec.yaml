@@ -39,6 +39,8 @@ dependencies:
   sqflite: any
   url_launcher: 6.1.11
   image_picker: ^0.8.7+5
+  mdi: ^5.0.0-nullsafety.0
+  auto_size_text: ^3.0.0
 
 dev_dependencies:
   flutter_test:
@@ -70,6 +72,7 @@ flutter:
   assets:
 
     - images/megaman-x.jpg
+    - images/fundo-D20.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

@@ -14,8 +14,10 @@ final String elementoColumn = "elementoColumn";
 final String nivelColumn = "nivelColumn";
 final String xpColumn = "xpColumn";
 final String classeColumn = "classeColumn";
+final String classeLvColumn = "classeLvColumn";
 final String tituloColumn = "tituloColumn";
 final String idadeColumn = "idadeColumn";
+final String moedaColumn = "moedaColumn";
 
 final String forcaColumn = "forcaColumn";
 final String agilidadeColumn = "agilidadeColumn";
@@ -63,8 +65,8 @@ class JogadorHelper {
     return await openDatabase(path, version: 1,onCreate: (Database db, int newerVersion) async {
       await db.execute(
           "CREATE TABLE $jogadorTable($idColumn INTEGER PRIMARY KEY, $imgColumn TEXT, $jogadorColumn TEXT, $nomeColumn TEXT,"
-              "$racaColumn TEXT, $elementoColumn TEXT, $nivelColumn TEXT, $xpColumn TEXT, $classeColumn TEXT, $tituloColumn TEXT, $idadeColumn TEXT, $forcaColumn TEXT,"
-              "$agilidadeColumn TEXT, $destrezaColumn TEXT, $esquivaColumn TEXT, $constituicaoColumn TEXT, $sabedoriaColumn TEXT,"
+              "$racaColumn TEXT, $elementoColumn TEXT, $nivelColumn TEXT, $xpColumn TEXT, $classeColumn TEXT, $classeLvColumn TEXT, $tituloColumn TEXT, $moedaColumn TEXT, $idadeColumn TEXT,"
+              "$forcaColumn TEXT, $agilidadeColumn TEXT, $destrezaColumn TEXT, $esquivaColumn TEXT, $constituicaoColumn TEXT, $sabedoriaColumn TEXT,"
               "$armaduraCorporalColumn TEXT, $resistenciaColumn TEXT, $sorteColumn TEXT, $inteligenciaColumn TEXT, $percepcaoColumn TEXT, $carismaColumn TEXT,"
               "$ataqueColumn TEXT, $defesaColumn TEXT, $criticoColumn TEXT, $vidaColumn TEXT, $manaColumn TEXT, $magiaColumn TEXT)"
       );
@@ -79,7 +81,7 @@ class JogadorHelper {
   Future<Jogador?> getJogador(int id) async{
     Database? dbJogador = await db;
     List<Map> maps = await dbJogador.query(jogadorTable,
-    columns: [idColumn, imgColumn, jogadorColumn, nomeColumn, racaColumn, elementoColumn, nivelColumn , xpColumn, classeColumn, tituloColumn, idadeColumn,
+    columns: [idColumn, imgColumn, jogadorColumn, nomeColumn, racaColumn, elementoColumn, nivelColumn , xpColumn, classeColumn, classeLvColumn, tituloColumn, idadeColumn, moedaColumn,
       forcaColumn, agilidadeColumn, destrezaColumn, esquivaColumn, constituicaoColumn, sabedoriaColumn, armaduraCorporalColumn,
       resistenciaColumn, sorteColumn, inteligenciaColumn, percepcaoColumn, carismaColumn, ataqueColumn, defesaColumn, criticoColumn,
       vidaColumn, manaColumn, magiaColumn],
@@ -139,8 +141,10 @@ class Jogador{
   int? nivel;
   int? xp;
   String? classe;
+  int? classeLv;
   String? titulo;
-  String? idade;
+  int? idade;
+  int? moeda;
 
   int? forca;
   int? agilidade;
@@ -176,8 +180,10 @@ class Jogador{
     nivel = map [nivelColumn];
     xp = map [xpColumn];
     classe = map [classeColumn];
+    classeLv = map [classeLvColumn];
     titulo = map [tituloColumn];
     idade = map [idadeColumn];
+    moeda = map [moedaColumn];
 
     forca = map [forcaColumn];
     agilidade = map [agilidadeColumn];
@@ -212,8 +218,10 @@ class Jogador{
       nivelColumn: nivel,
       xpColumn: xp,
       classeColumn: classe,
+      classeLvColumn: classeLv,
       tituloColumn: titulo,
       idadeColumn: idade,
+      moedaColumn: moeda,
       forcaColumn: forca,
       agilidadeColumn: agilidade,
       destrezaColumn: destreza,
