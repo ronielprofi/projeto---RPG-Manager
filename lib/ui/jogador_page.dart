@@ -31,13 +31,13 @@ class _JogadorPageState extends State<JogadorPage> {
 
   final _nomeController = TextEditingController();
   final _racaController = TextEditingController();
-  final _idade = TextEditingController();
+  final _idadeController = TextEditingController();
   final _elementoController = TextEditingController();
 
   final _classeController = TextEditingController();
   final _classeLvController = TextEditingController();
-  final _titulo = TextEditingController();
-  final _moedas = TextEditingController();
+  final _tituloController = TextEditingController();
+  final _moedasController = TextEditingController();
 
 
 
@@ -68,13 +68,13 @@ class _JogadorPageState extends State<JogadorPage> {
 
       _nomeController.text = _editedJogador?.nome??" ";
       _racaController.text = _editedJogador?.raca??" ";
-      _idade.text = (_editedJogador?.idade??"0").toString();
+      _idadeController.text = (_editedJogador?.idade??"0").toString();
       _elementoController.text = _editedJogador?.elemento??" ";
 
       _classeController.text = _editedJogador?.classe??" ";
       _classeLvController.text = (_editedJogador?.classeLv??"1").toString();
-      _titulo.text = _editedJogador?.titulo??" ";
-      _moedas.text = (_editedJogador?.moeda??"0").toString();
+      _tituloController.text = _editedJogador?.titulo??" ";
+      _moedasController.text = (_editedJogador?.moeda??"0").toString();
     }
   }
   @override
@@ -166,7 +166,23 @@ class _JogadorPageState extends State<JogadorPage> {
                               enabled: _admModo,
                               controller: _jogadorController,
                               focusNode: _jogadorFocus,
-                              decoration: InputDecoration(labelText: "Jogador"),
+                              cursorColor: Colors.blue,
+                              decoration: InputDecoration(
+                                floatingLabelBehavior: FloatingLabelBehavior.always,
+                                contentPadding: EdgeInsets.all(8),
+                                fillColor: Colors.white,
+                                filled: true,
+                                labelStyle: TextStyle(color: Colors.blue),
+                                labelText: "Jogador",
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(5),
+                                  borderSide: BorderSide(
+                                    width: 1.0,
+                                    color: Colors.grey,
+                                  ),
+                                ),
+                              ) ,
+                              textCapitalization: TextCapitalization.characters,
                               onChanged: (text){
                                 _userEdited = true;
                                 setState(() {
@@ -178,16 +194,135 @@ class _JogadorPageState extends State<JogadorPage> {
                         ),
                         SizedBox(width: 10,),
                         Expanded(
+                          flex: 1,
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 14),
+                            child: TextField(
+                              enabled: _admModo,
+                              controller: _nivelController,
+                              cursorColor: Colors.blue,
+                              keyboardType: TextInputType.number,
+                              decoration: InputDecoration(
+                                floatingLabelBehavior: FloatingLabelBehavior.always,
+                                contentPadding: EdgeInsets.all(8),
+                                fillColor: Colors.white,
+                                filled: true,
+                                labelStyle: TextStyle(color: Colors.blue),
+                                labelText: "Nivel",
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(5),
+                                  borderSide: BorderSide(
+                                    width: 1.0,
+                                    color: Colors.grey,
+                                  ),
+                                ),
+                              ),
+                              onChanged: (text){
+                                _userEdited = true;
+                                _editedJogador!.nivel = int.parse(text);
+                              },
+                            ),
+                          ),
+                        ),
+                        SizedBox(width: 10,),
+                        Expanded(
                           flex: 2,
                           child: Padding(
                             padding: const EdgeInsets.symmetric(vertical: 14),
                             child: TextField(
                               enabled: _admModo,
-                              controller: _nomeController,
-                              decoration: InputDecoration(labelText: "Level"),
+                              controller: _xpController,
+                              cursorColor: Colors.blue,
+                              keyboardType: TextInputType.number,
+                              decoration: InputDecoration(
+                                floatingLabelBehavior: FloatingLabelBehavior.always,
+                                contentPadding: EdgeInsets.all(8),
+                                fillColor: Colors.white,
+                                filled: true,
+                                labelStyle: TextStyle(color: Colors.blue),
+                                labelText: "XP",
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(5),
+                                  borderSide: BorderSide(
+                                    width: 1.0,
+                                    color: Colors.grey,
+                                  ),
+                                ),
+                              ),
                               onChanged: (text){
                                 _userEdited = true;
-                                _editedJogador!.nivel = int.parse(text);
+                                _editedJogador!.xp = int.parse(text);
+                              },
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Expanded(
+                          flex: 1,
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 14),
+                            child: TextField(
+                              enabled: _admModo,
+                              controller: _nomeController,
+                              cursorColor: Colors.green,
+                              decoration: InputDecoration(
+                                floatingLabelBehavior: FloatingLabelBehavior.always,
+                                contentPadding: EdgeInsets.all(8),
+                                fillColor: Colors.white,
+                                filled: true,
+                                labelStyle: TextStyle(color: Colors.blue),
+                                labelText: "Nome",
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(5),
+                                  borderSide: BorderSide(
+                                    width: 1.0,
+                                    color: Colors.grey,
+                                  ),
+                                ),
+                              ) ,
+                              textCapitalization: TextCapitalization.characters,
+                              onChanged: (text){
+                                _userEdited = true;
+                                setState(() {
+                                  _editedJogador!.nome = text;
+                                });
+                              },
+                            ),
+                          ),
+                        ),
+                        SizedBox(width: 10,),
+                        Expanded(
+                          flex: 1,
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 14),
+                            child: TextField(
+                              enabled: _admModo,
+                              controller: _elementoController,
+                              cursorColor: Colors.green,
+                              decoration: InputDecoration(
+                                floatingLabelBehavior: FloatingLabelBehavior.always,
+                                contentPadding: EdgeInsets.all(8),
+                                fillColor: Colors.white,
+                                filled: true,
+                                labelStyle: TextStyle(color: Colors.blue),
+                                labelText: "Elemento",
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(5),
+                                  borderSide: BorderSide(
+                                    width: 1.0,
+                                    color: Colors.grey,
+                                  ),
+                                ),
+                              ) ,
+                              textCapitalization: TextCapitalization.characters,
+                              onChanged: (text){
+                                _userEdited = true;
+                                setState(() {
+                                  _editedJogador!.elemento = text;
+                                });
                               },
                             ),
                           ),
@@ -200,10 +335,28 @@ class _JogadorPageState extends State<JogadorPage> {
                             child: TextField(
                               enabled: _admModo,
                               controller: _racaController,
-                              decoration: InputDecoration(labelText: "Raça"),
+                              cursorColor: Colors.green,
+                              decoration: InputDecoration(
+                                floatingLabelBehavior: FloatingLabelBehavior.always,
+                                contentPadding: EdgeInsets.all(8),
+                                fillColor: Colors.white,
+                                filled: true,
+                                labelStyle: TextStyle(color: Colors.blue),
+                                labelText: "Raça",
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(5),
+                                  borderSide: BorderSide(
+                                    width: 1.0,
+                                    color: Colors.grey,
+                                  ),
+                                ),
+                              ) ,
+                              textCapitalization: TextCapitalization.characters,
                               onChanged: (text){
                                 _userEdited = true;
-                                _editedJogador!.raca = text;
+                                setState(() {
+                                  _editedJogador!.raca = text;
+                                });
                               },
                             ),
                           ),
@@ -217,13 +370,27 @@ class _JogadorPageState extends State<JogadorPage> {
                             padding: const EdgeInsets.symmetric(vertical: 14),
                             child: TextField(
                               enabled: _admModo,
-                              controller: _jogadorController,
-                              focusNode: _jogadorFocus,
-                              decoration: InputDecoration(labelText: "Jogador"),
+                              controller: _classeController,
+                              decoration: InputDecoration(
+                                floatingLabelBehavior: FloatingLabelBehavior.always,
+                                contentPadding: EdgeInsets.all(8),
+                                fillColor: Colors.white,
+                                filled: true,
+                                labelStyle: TextStyle(color: Colors.blue),
+                                labelText: "Classe",
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(5),
+                                  borderSide: BorderSide(
+                                    width: 1.0,
+                                    color: Colors.grey,
+                                  ),
+                                ),
+                              ),
+                              textCapitalization: TextCapitalization.characters,
                               onChanged: (text){
                                 _userEdited = true;
                                 setState(() {
-                                  _editedJogador!.jogador = text;
+                                  _editedJogador!.classe = text;
                                 });
                               },
                             ),
@@ -235,11 +402,26 @@ class _JogadorPageState extends State<JogadorPage> {
                             padding: const EdgeInsets.symmetric(vertical: 14),
                             child: TextField(
                               enabled: _admModo,
-                              controller: _nomeController,
-                              decoration: InputDecoration(labelText: "Nome"),
+                              controller: _classeLvController,
+                              decoration: InputDecoration(
+                                floatingLabelBehavior: FloatingLabelBehavior.always,
+                                contentPadding: EdgeInsets.all(8),
+                                fillColor: Colors.white,
+                                filled: true,
+                                labelStyle: TextStyle(color: Colors.blue),
+                                labelText: "Cl.Nivel",
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(5),
+                                  borderSide: BorderSide(
+                                    width: 1.0,
+                                    color: Colors.grey,
+                                  ),
+                                ),
+                              ),
+                              textCapitalization: TextCapitalization.characters,
                               onChanged: (text){
                                 _userEdited = true;
-                                _editedJogador!.nome = text;
+                                _editedJogador!.classeLv = int.parse(text);
                               },
                             ),
                           ),
@@ -250,11 +432,26 @@ class _JogadorPageState extends State<JogadorPage> {
                             padding: const EdgeInsets.symmetric(vertical: 14),
                             child: TextField(
                               enabled: _admModo,
-                              controller: _racaController,
-                              decoration: InputDecoration(labelText: "Raça"),
+                              controller: _moedasController,
+                              decoration: InputDecoration(
+                                floatingLabelBehavior: FloatingLabelBehavior.always,
+                                contentPadding: EdgeInsets.all(8),
+                                fillColor: Colors.white,
+                                filled: true,
+                                labelStyle: TextStyle(color: Colors.blue),
+                                labelText: "Moedas",
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(5),
+                                  borderSide: BorderSide(
+                                    width: 1.0,
+                                    color: Colors.grey,
+                                  ),
+                                ),
+                              ),
+                              textCapitalization: TextCapitalization.characters,
                               onChanged: (text){
                                 _userEdited = true;
-                                _editedJogador!.raca = text;
+                                _editedJogador!.moeda = int.parse(text);
                               },
                             ),
                           ),
@@ -268,13 +465,27 @@ class _JogadorPageState extends State<JogadorPage> {
                             padding: const EdgeInsets.symmetric(vertical: 14),
                             child: TextField(
                               enabled: _admModo,
-                              controller: _jogadorController,
-                              focusNode: _jogadorFocus,
-                              decoration: InputDecoration(labelText: "Jogador"),
+                              controller: _tituloController,
+                              decoration: InputDecoration(
+                                floatingLabelBehavior: FloatingLabelBehavior.always,
+                                contentPadding: EdgeInsets.all(8),
+                                fillColor: Colors.white,
+                                filled: true,
+                                labelStyle: TextStyle(color: Colors.blue),
+                                labelText: "Titulo",
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(5),
+                                  borderSide: BorderSide(
+                                    width: 1.0,
+                                    color: Colors.grey,
+                                  ),
+                                ),
+                              ),
+                              textCapitalization: TextCapitalization.characters,
                               onChanged: (text){
                                 _userEdited = true;
                                 setState(() {
-                                  _editedJogador!.jogador = text;
+                                  _editedJogador!.titulo = text;
                                 });
                               },
                             ),
@@ -286,61 +497,31 @@ class _JogadorPageState extends State<JogadorPage> {
                             padding: const EdgeInsets.symmetric(vertical: 14),
                             child: TextField(
                               enabled: _admModo,
-                              controller: _nomeController,
-                              decoration: InputDecoration(labelText: "Nome"),
+                              controller: _idadeController,
+                              decoration: InputDecoration(
+                                floatingLabelBehavior: FloatingLabelBehavior.always,
+                                contentPadding: EdgeInsets.all(8),
+                                fillColor: Colors.white,
+                                filled: true,
+                                labelStyle: TextStyle(color: Colors.blue),
+                                labelText: "Idade",
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(5),
+                                  borderSide: BorderSide(
+                                    width: 1.0,
+                                    color: Colors.grey,
+                                  ),
+                                ),
+                              ),
+                              textCapitalization: TextCapitalization.characters,
                               onChanged: (text){
                                 _userEdited = true;
-                                _editedJogador!.nome = text;
-                              },
-                            ),
-                          ),
-                        ),
-                        SizedBox(width: 10,),
-                        Expanded(
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 14),
-                            child: TextField(
-                              enabled: _admModo,
-                              controller: _racaController,
-                              decoration: InputDecoration(labelText: "Raça"),
-                              onChanged: (text){
-                                _userEdited = true;
-                                _editedJogador!.raca = text;
+                                _editedJogador!.idade = int.parse(text);
                               },
                             ),
                           ),
                         ),
                       ],
-                    ),
-                    TextField(
-                      enabled: _admModo,
-                      controller: _jogadorController,
-                      focusNode: _jogadorFocus,
-                      decoration: InputDecoration(labelText: "Jogador"),
-                      onChanged: (text){
-                        _userEdited = true;
-                        setState(() {
-                          _editedJogador!.jogador = text;
-                        });
-                      },
-                    ),
-                    TextField(
-                      enabled: _admModo,
-                      controller: _nomeController,
-                      decoration: InputDecoration(labelText: "Nome"),
-                      onChanged: (text){
-                        _userEdited = true;
-                        _editedJogador!.nome = text;
-                      },
-                    ),
-                    TextField(
-                      enabled: _admModo,
-                      controller: _racaController,
-                      decoration: InputDecoration(labelText: "Raça"),
-                      onChanged: (text){
-                        _userEdited = true;
-                        _editedJogador!.raca = text;
-                      },
                     ),
                     Row(
                       children: [

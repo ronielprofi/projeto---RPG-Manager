@@ -167,7 +167,45 @@ class Jogador{
   int? mana;
   int? magia;
 
-  Jogador();
+  Jogador({
+
+    this.id,
+    this.img,
+
+    this.jogador,
+    this.nome,
+    this.raca,
+    this.elemento,
+    this.nivel,
+    this.xp,
+    this.classe,
+    this.classeLv,
+    this.titulo,
+    this.idade,
+    this.moeda,
+
+    this.forca,
+    this.agilidade,
+    this.destreza,
+    this.esquiva,
+    this.constituicao,
+    this.sabedoria,
+
+    this.armaduraCorporal,
+    this.resistencia,
+    this.sorte,
+    this.inteligencia,
+    this.percepcao,
+    this.carisma,
+
+    this.ataque,
+    this.defesa,
+    this.critico,
+    this.vida,
+    this.mana,
+    this.magia,
+
+  });
 
   Jogador.fromMap(Map map){
     id = map [idColumn];
